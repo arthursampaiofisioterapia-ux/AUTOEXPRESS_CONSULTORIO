@@ -1,0 +1,64 @@
+function main() {
+
+  // 🔹 1 Abrir planilha pelo ID
+  var idPlanilha = "1hb_YRrnITDvyPIuY09tIh0AS6ZL6IezpqU6v8-8o-x0";
+  var ss = SpreadsheetApp.openById(idPlanilha);
+
+  if (!ss) {
+    throw new Error("Não foi possível abrir a planilha. Verifique o ID ou permissões.");
+  }
+
+  // 🔹 2 Acessar aba
+  var aba = ss.getSheetByName("AUTOEXPRESS_CONSULTORIO");
+
+  if (!aba) {
+    throw new Error("A aba AUTOEXPRESS_CONSULTORIO não foi encontrada.");
+  }
+
+  // 🔹 3 Buscar última linha
+  var ultimaLinha = aba.getLastRow();
+
+  if (ultimaLinha < 2) {
+    throw new Error("Não há registros na planilha.");
+  }
+
+  // 🔹 4 Buscar dados da última linha
+  var ultimaLinhaDados = aba.getRange(
+    ultimaLinha,
+    1,
+    1,
+    aba.getLastColumn()
+  ).getValues()[0];
+
+  // 🔹 5 Buscar cabeçalhos
+  var cabecalhos = aba.getRange(
+    1,
+    1,
+    1,
+    aba.getLastColumn()
+  ).getValues()[0];
+
+  // 🔹 6 Organizar em objeto
+  var dados = {};
+
+  for (var i = 0; i < cabecalhos.length; i++) {
+    dados[cabecalhos[i]] = ultimaLinhaDados[i];
+  }
+
+  Logger.log(dados);
+
+  // 🔹 7 Criar documento
+  var doc = DocumentApp.create("AUTOEXPRESS_" + dados["NUM_AUTO"]);
+  var corpo = doc.getBody();
+
+  // 🔹 8 Gerar Documento
+  gerarCabecalho(corpo, dados);
+  gerarParagrafo1(corpo, dados);
+  gerarParagrafo2(corpo, dados);
+  gerarParagrafo3(corpo, dados); // ✅ NOVA FUNÇÃO ADICIONADA
+
+  // 🔹 9 Salvar e fechar
+  doc.saveAndClose();
+
+  Logger.log("Documento criado com sucesso: " + doc.getUrl());
+}
