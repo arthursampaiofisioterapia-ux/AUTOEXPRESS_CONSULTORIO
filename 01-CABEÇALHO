@@ -1,0 +1,103 @@
+function gerarCabecalho(corpo, dados) {
+
+  var minutoFormatado = String(dados["MINUTO"]).padStart(2, "0");
+
+  // ===============================
+  // TÍTULO
+  // ===============================
+
+  var titulo = corpo.appendParagraph("AUTO DE CONSTATAÇÃO");
+  titulo.setFontFamily("Times New Roman")
+        .setFontSize(12)
+        .setBold(true)
+        .setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+
+  // Linha em branco
+  corpo.appendParagraph("");
+
+  // ===============================
+  // Nº DO AUTO (direita e negrito)
+  // ===============================
+
+  var numeroAuto = corpo.appendParagraph(
+    "Nº " + String(dados["NUM_AUTO"]).toUpperCase()
+  );
+
+  numeroAuto.setFontFamily("Times New Roman")
+            .setFontSize(12)
+            .setBold(true)
+            .setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+
+  // ===============================
+  // BLOCO CENTRAL EM NEGRITO
+  // ===============================
+
+  var linhasNegrito = [
+    "FISCALIZADO(A): " + dados["NOME_CONSULTORIO"],
+    "INSCRIÇÃO DE CONSULTÓRIO NO CREFITO-4/MG: " + dados["INSCRICAO_CONSULTORIO"],
+    "INSCRIÇÃO DE PROFISSIONAL NO CREFITO-4/MG: " + dados["INSCRICAO_PROFISSIONAL"],
+    "ENDEREÇO: " + dados["ENDERECO_CONSULTORIO"],
+    "CEP: " + dados["CEP_DILIGENCIA"],
+    "E-MAIL: " + dados["EMAIL"]
+  ];
+
+  for (var i = 0; i < linhasNegrito.length; i++) {
+
+    var p = corpo.appendParagraph(
+      String(linhasNegrito[i]).toUpperCase()
+    );
+
+    p.setFontFamily("Times New Roman")
+     .setFontSize(12)
+     .setBold(true)
+     .setAlignment(DocumentApp.HorizontalAlignment.LEFT)
+     .setLineSpacing(1.15);
+  }
+
+  // ===============================
+  // DUAS LINHAS EM BRANCO
+  // ===============================
+
+  corpo.appendParagraph("");
+  corpo.appendParagraph("");
+
+  // ===============================
+  // CIDADE / DATA (direita, sem negrito)
+  // ===============================
+
+  var dataLinha = corpo.appendParagraph(
+    (
+      dados["CIDADE"] + ", " +
+      dados["DIA"] + " DE " +
+      dados["MES"] + " DE " +
+      dados["ANO"] + " ÀS " +
+      dados["HORA"] + "H" +
+      minutoFormatado
+    ).toUpperCase()
+  );
+
+  dataLinha.setFontFamily("Times New Roman")
+           .setFontSize(12)
+           .setBold(false)
+           .setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+
+  // ===============================
+  // DUAS LINHAS EM BRANCO
+  // ===============================
+
+  corpo.appendParagraph("");
+  corpo.appendParagraph("");
+
+  // ===============================
+  // FRASE FINAL DO CABEÇALHO
+  // ===============================
+
+  var situacao = corpo.appendParagraph(
+    "Situação fática encontrada na diligência:"
+  );
+
+  situacao.setFontFamily("Times New Roman")
+          .setFontSize(12)
+          .setBold(true)
+          .setAlignment(DocumentApp.HorizontalAlignment.LEFT);
+}
