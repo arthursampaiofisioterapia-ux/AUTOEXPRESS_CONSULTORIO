@@ -1,0 +1,47 @@
+function gerarParagrafo1(corpo, dados) {
+
+  var nomesBrutos = String(dados["NOME_FISCAL"] || "").trim();
+  if (!nomesBrutos) return;
+
+  var listaNomes = nomesBrutos.split(",").map(function(nome) {
+    return nome.trim();
+  });
+
+  var textoPrincipal = "";
+
+  if (listaNomes.length === 1) {
+
+    textoPrincipal =
+      "Em rotina de fiscalização, eu, " + listaNomes[0] +
+      ", Agente Fiscal Federal do Conselho Regional de Fisioterapia e Terapia Ocupacional da 4ª Região – CREFITO-4, fui ao endereço supracitado, em cumprimento ao que determina a norma contida no art. 7º, inciso III, da Lei Federal nº 6.316/75.";
+
+  } else {
+
+    var nomesFormatados = "";
+
+    for (var i = 0; i < listaNomes.length; i++) {
+      if (i === 0) {
+        nomesFormatados += listaNomes[i];
+      } else if (i === listaNomes.length - 1) {
+        nomesFormatados += " e " + listaNomes[i];
+      } else {
+        nomesFormatados += ", " + listaNomes[i];
+      }
+    }
+
+    textoPrincipal =
+      "Em rotina de fiscalização, nós, " + nomesFormatados +
+      ", Agente Fiscal Federal do Conselho Regional de Fisioterapia e Terapia Ocupacional da 4ª Região – CREFITO-4, fomos ao endereço supracitado, em cumprimento ao que determina a norma contida no art. 7º, inciso III, da Lei Federal nº 6.316/75.";
+  }
+
+  // 🔹 Linha em branco antes do parágrafo (espaço após cabeçalho)
+  corpo.appendParagraph("");
+
+  // 🔹 Parágrafo principal (forçando SEM negrito)
+  var paragrafo = corpo.appendParagraph(textoPrincipal);
+  aplicarEstiloCorpo(paragrafo);
+  paragrafo.setBold(false);
+
+  // 🔹 Linha em branco após
+  corpo.appendParagraph("");
+}
