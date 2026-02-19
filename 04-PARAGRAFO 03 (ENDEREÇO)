@@ -1,0 +1,52 @@
+function gerarParagrafo3(corpo, dados) {
+
+  var enderecoCorreto = String(dados["ENDERECO_CORRETO"] || "")
+                        .toUpperCase()
+                        .trim();
+
+  // 🔹 Se endereço está correto → omite tudo
+  if (enderecoCorreto === "SIM") {
+    return;
+  }
+
+  if (enderecoCorreto !== "NAO") {
+    return;
+  }
+
+  var enderecoCadastro = dados["ENDERECO_CADASTRO"] || "";
+  var cepCadastro = dados["CEP_CADASTRO"] || "";
+  var enderecoCorrigido = String(dados["ENDERECO_CORRIGIDO"] || "")
+                           .toUpperCase()
+                           .trim();
+
+  var texto = "";
+
+  // 🔹 Texto base obrigatório
+  texto =
+    "Verificou-se, durante a diligência, que o endereço do consultório cadastrado perante o sistema do conselho fiscalizatório está atualmente como " +
+    enderecoCadastro +
+    ", CEP: " + cepCadastro +
+    ". Contudo, apurou-se in loco que o estabelecimento encontra-se instalado no endereço indicado no cabeçalho deste auto.";
+
+  // 🔹 Complemento conforme correção
+  if (enderecoCorrigido === "SIM") {
+
+    texto +=
+      " Ainda durante a fiscalização, a equipe realizou a retificação do cadastro corrigindo assim qualquer diferença entre o cadastro e a situação fática encontrada. Sem prejuízo, cabe ao responsável técnico do consultório realizar atualizações futuras dos dados cadastrais junto ao CREFITO-4. Seguindo a Resolução COFFITO nº 424, Artigo 3º, § 2º: A atualização cadastral deve ocorrer minimamente a cada ano.";
+
+  } else if (enderecoCorrigido === "NAO") {
+
+    texto +=
+      " A equipe fiscalizatória não foi capaz de realizar a retificação da informação. Se faz necessário, portanto, que seja realizada a atualização dos dados cadastrais junto ao CREFITO-4. Responsabilidade anual designada ao Responsável Técnico do consultório conforme Resolução COFFITO nº 424.";
+
+  }
+
+
+  // 🔹 Inserção com estilo padrão do corpo
+  var paragrafo = corpo.appendParagraph(texto);
+  aplicarEstiloCorpo(paragrafo);
+  paragrafo.setBold(false);
+
+  // 🔹 Linha em branco após
+  corpo.appendParagraph("");
+}
