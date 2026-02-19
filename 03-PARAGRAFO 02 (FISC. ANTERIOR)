@@ -1,0 +1,40 @@
+function gerarParagrafo2(corpo, dados) {
+
+  var status = String(dados["AUTO_ANTERIOR"] || "").toUpperCase().trim();
+
+  if (status === "OMITIR" || status === "") {
+    return;
+  }
+
+  var texto = "";
+
+  if (status === "NAO") {
+
+    texto = "Em busca no sistema do CREFITO-4/MG, foi constatado que o estabelecimento nunca havia sido fiscalizado anteriormente.";
+
+  } else if (status === "SIM") {
+
+    var dataAnterior = dados["DATA_AUTOANTERIOR"];
+    var numeroAnterior = dados["NUM_AUTOANTERIOR"];
+
+    if (dataAnterior instanceof Date) {
+      dataAnterior = Utilities.formatDate(
+        dataAnterior,
+        Session.getScriptTimeZone(),
+        "dd/MM/yyyy"
+      );
+    }
+
+    texto = "Conforme consta no sistema do CREFITO-4, o estabelecimento foi fiscalizado anteriormente na data de " +
+            dataAnterior +
+            ", sendo na ocasião lavrado o Auto de Constatação nº " +
+            numeroAnterior + ".";
+  }
+
+  if (texto) {
+    var paragrafo = corpo.appendParagraph(texto);
+    aplicarEstiloCorpo(paragrafo);
+    aplicarEstiloCorpo(corpo.appendParagraph(""));
+  }
+}
+
