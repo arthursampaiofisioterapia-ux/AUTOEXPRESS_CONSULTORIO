@@ -1,0 +1,5 @@
+function aplicarEstiloCabecalho(paragrafo) {
+  paragrafo
+    .setFontFamily("Times New Roman")
+    .setFontSize(12);
+}
