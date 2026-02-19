@@ -1,0 +1,8 @@
+function aplicarEstiloCorpo(paragrafo) {
+  paragrafo
+    .setFontFamily("Times New Roman")
+    .setFontSize(12)
+    .setIndentStart(0)          // parágrafo inteiro SEM recuo
+    .setIndentFirstLine(56.7)   // apenas primeira linha com 2 cm
+    .setAlignment(DocumentApp.HorizontalAlignment.LEFT);
+}
